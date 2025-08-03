@@ -13,6 +13,10 @@
     backdrop-filter: blur(20px);
     position: relative;
     overflow: hidden;
+    min-width: 200px !important;
+    min-height: 200px !important;
+    max-width: 200px !important;
+    max-height: 200px !important;
 }
 
 .app-button::before {

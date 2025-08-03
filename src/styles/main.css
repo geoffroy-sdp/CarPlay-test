@@ -107,6 +107,14 @@ body {
     place-items: center;
 }
 
+/* Force la taille des boutons */
+.app-grid .app-button {
+    width: 200px !important;
+    height: 200px !important;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
 .connection-status {
     position: absolute;
     bottom: 20px;
