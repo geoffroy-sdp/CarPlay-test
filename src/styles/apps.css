@@ -1,0 +1,471 @@
+/* Styles pour les écrans d'applications */
+
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    animation: slideIn 0.3s ease;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.app-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+/* Navigation */
+.nav-controls {
+    width: 60px;
+}
+
+.back-button {
+    width: 40px;
+    height: 40px;
+    background: rgba(28, 28, 30, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Écran Musique */
+.music-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.music-option-button {
+    width: 200px;
+    height: 160px;
+    background: rgba(28, 28, 30, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.music-option-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.music-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.spotify-button:hover {
+    border-color: #1DB954;
+    background: rgba(29, 185, 84, 0.1);
+}
+
+.spotify-button .music-icon {
+    color: #1DB954;
+}
+
+.youtube-button:hover {
+    border-color: #FF0000;
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.youtube-button .music-icon {
+    color: #FF0000;
+}
+
+.bluetooth-button:hover {
+    border-color: #007AFF;
+    background: rgba(0, 122, 255, 0.1);
+}
+
+.bluetooth-button .music-icon {
+    color: #007AFF;
+}
+
+/* Lecteur Bluetooth */
+.bluetooth-player {
+    background: rgba(28, 28, 30, 0.9);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.now-playing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.track-info {
+    flex: 1;
+}
+
+.track-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+}
+
+.track-artist {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.bluetooth-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #FF3B30;
+}
+
+.status-indicator.connected {
+    background: #30D158;
+    animation: pulse 2s infinite;
+}
+
+/* Écran GPS */
+.gps-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.gps-status {
+    background: rgba(28, 28, 30, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.connection-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+.phone-ip {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: monospace;
+}
+
+.gps-data {
+    background: rgba(28, 28, 30, 0.9);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gps-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.gps-info-item {
+    text-align: center;
+}
+
+.gps-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gps-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #30D158;
+    font-family: monospace;
+}
+
+.gps-map-placeholder {
+    flex: 1;
+    background: rgba(28, 28, 30, 0.9);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 200px;
+}
+
+.map-icon {
+    width: 60px;
+    height: 60px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 15px;
+}
+
+.map-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.gps-map-placeholder p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Écran Settings */
+.settings-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+.settings-section {
+    background: rgba(28, 28, 30, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin: 0 0 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.logs-container {
+    max-height: 120px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.log-entry {
+    display: flex;
+    gap: 15px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-time {
+    color: #30D158;
+    min-width: 80px;
+}
+
+.log-message {
+    color: rgba(255, 255, 255, 0.8);
+    flex: 1;
+}
+
+.settings-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.settings-button {
+    height: 80px;
+    background: rgba(28, 28, 30, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #FFFFFF;
+    gap: 8px;
+}
+
+.settings-button:hover {
+    transform: scale(1.05);
+    border-color: #007AFF;
+    background: rgba(0, 122, 255, 0.1);
+}
+
+.settings-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.settings-button span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.restart-interface:hover {
+    border-color: #FF9500;
+    background: rgba(255, 149, 0, 0.1);
+}
+
+.restart-backend:hover {
+    border-color: #30D158;
+    background: rgba(48, 209, 88, 0.1);
+}
+
+/* Webview Container */
+.webview-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 1024px;
+    height: 450px;
+    background: #000000;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-webview {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transition: all 0.3s ease;
+}
+
+.close-webview:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.close-webview svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scrollbar personnalisée */
+.settings-container::-webkit-scrollbar,
+.logs-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.settings-container::-webkit-scrollbar-track,
+.logs-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.settings-container::-webkit-scrollbar-thumb,
+.logs-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.settings-container::-webkit-scrollbar-thumb:hover,
+.logs-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive pour écran tactile */
+@media (max-width: 1024px) {
+    .music-options {
+        gap: 30px;
+    }
+    
+    .music-option-button {
+        width: 180px;
+        height: 140px;
+    }
+    
+    .gps-info-grid {
+        gap: 20px;
+    }
+    
+    .settings-actions {
+        grid-template-columns: 1fr;
+    }
+}

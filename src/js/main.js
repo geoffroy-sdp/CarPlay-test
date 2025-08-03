@@ -1,6 +1,7 @@
 class CarPlayInterface {
     constructor() {
         this.currentApp = null;
+        this.currentScreen = 'home';
         this.init();
     }
 
@@ -17,6 +18,12 @@ class CarPlayInterface {
             button.addEventListener('touchstart', (e) => this.handleTouchStart(e));
             button.addEventListener('touchend', (e) => this.handleTouchEnd(e));
         });
+
+        // Gestionnaire pour le bouton retour
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+            backButton.addEventListener('click', () => this.goBack());
+        }
 
         // Gestionnaire pour les touches clavier (navigation alternative)
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
@@ -70,58 +77,40 @@ class CarPlayInterface {
     launchApp(appName) {
         console.log(`Lancement de l'application: ${appName}`);
         this.currentApp = appName;
+        this.showScreen(appName);
+    }
 
-        // Simulation du lancement d'application
-        switch(appName) {
-            case 'music':
-                this.showAppLaunch('Musique', '#FF2D55');
-                // Ici, vous pourrez intégrer votre lecteur de musique
-                break;
-            case 'gps':
-                this.showAppLaunch('GPS', '#30D158');
-                // Ici, vous pourrez intégrer votre système GPS
-                break;
-            case 'settings':
-                this.showAppLaunch('Settings', '#8E8E93');
-                // Ici, vous pourrez intégrer vos paramètres
-                break;
+    showScreen(screenName) {
+        // Masquer tous les écrans
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+
+        // Afficher l'écran demandé
+        const targetScreen = document.getElementById(`${screenName}Screen`);
+        if (targetScreen) {
+            targetScreen.classList.add('active');
+            this.currentScreen = screenName;
+            
+            // Afficher/masquer le bouton retour
+            const backButton = document.getElementById('backButton');
+            if (backButton) {
+                if (screenName === 'home') {
+                    backButton.style.display = 'none';
+                } else {
+                    backButton.style.display = 'flex';
+                }
+            }
         }
     }
 
-    showAppLaunch(appName, color) {
-        // Création d'un overlay de lancement temporaire
-        const overlay = document.createElement('div');
-        overlay.className = 'launch-overlay';
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, ${color}20, ${color}10);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        `;
-        
-        overlay.innerHTML = `
-            <div style="text-align: center; color: white;">
-                <div style="font-size: 48px; margin-bottom: 20px;">📱</div>
-                <div style="font-size: 24px; font-weight: 600;">Ouverture de ${appName}...</div>
-            </div>
-        `;
-        
-        document.body.appendChild(overlay);
-        
-        setTimeout(() => {
-            overlay.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => {
-                overlay.remove();
-            }, 300);
-        }, 1500);
+    goBack() {
+        if (this.currentScreen !== 'home') {
+            this.showScreen('home');
+            this.currentApp = null;
+        }
     }
+
 
     handleKeydown(event) {
         // Navigation clavier pour accessibilité
@@ -139,6 +128,10 @@ class CarPlayInterface {
                 event.preventDefault();
                 const prevIndex = (currentIndex - 1 + buttons.length) % buttons.length;
                 buttons[prevIndex].focus();
+                break;
+            case 'Escape':
+                event.preventDefault();
+                this.goBack();
                 break;
             case 'Enter':
             case ' ':
@@ -186,6 +179,9 @@ document.head.appendChild(style);
 // Initialisation de l'interface
 document.addEventListener('DOMContentLoaded', () => {
     window.carPlayInterface = new CarPlayInterface();
+    
+    // Initialiser sur l'écran d'accueil
+    window.carPlayInterface.showScreen('home');
 });
 
 // Gestionnaire d'événements pour la connexion réseau
