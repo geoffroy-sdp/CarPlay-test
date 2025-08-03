@@ -216,7 +216,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    height: calc(540px - 100px); /* 440px disponible */
+    height: calc(460px - 100px); /* 360px disponible avec barre persistante */
     overflow-y: auto;
     padding: 0 15px 20px 0; /* Espace pour la scrollbar et marge en bas */
     touch-action: pan-y;
@@ -330,10 +330,15 @@
     top: 60px;
     left: 0;
     width: 1024px;
-    height: 540px;
+    height: 460px; /* Ajusté pour la barre persistante */
     background: #000000;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.webview-container webview {
+    width: 1024px;
+    height: 460px;
 }
 
 .close-webview {

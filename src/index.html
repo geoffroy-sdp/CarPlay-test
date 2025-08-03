@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarPlay Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/buttons.css">
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/apps.css">
+    <link rel="stylesheet" href="styles/controls.css">
 </head>
 <body>
     <div class="main-container">
@@ -15,9 +17,7 @@
         <header class="header">
             <div class="nav-controls">
                 <button class="back-button" id="backButton" style="display: none;">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                    </svg>
+                    <i class="fas fa-arrow-left"></i>
                 </button>
             </div>
             <div class="time-display" id="timeDisplay">12:34</div>
@@ -36,27 +36,21 @@
                 <div class="app-grid">
                     <button class="app-button music-button" data-app="music">
                         <div class="app-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                            </svg>
+                            <i class="fas fa-music"></i>
                         </div>
                         <span class="app-label">Musique</span>
                     </button>
 
                     <button class="app-button gps-button" data-app="gps">
                         <div class="app-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>
+                            <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <span class="app-label">GPS</span>
                     </button>
 
                     <button class="app-button settings-button" data-app="settings">
                         <div class="app-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.69,4.82,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-                            </svg>
+                            <i class="fas fa-cog"></i>
                         </div>
                         <span class="app-label">Settings</span>
                     </button>
@@ -71,27 +65,21 @@
                 <div class="music-options">
                     <button class="music-option-button spotify-button" data-music="spotify">
                         <div class="music-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 14.5c-.17 0-.33-.09-.43-.25-1.09-1.83-2.75-2.25-4.21-2.25-1.17 0-2.29.3-3.21.75-.14.07-.31.04-.42-.08-.11-.12-.13-.3-.04-.44.84-1.26 2.35-2.23 3.67-2.23 1.73 0 3.65.5 4.96 2.75.09.15.04.34-.11.43-.05.03-.13.07-.21.07zm.86-2.12c-.2 0-.39-.1-.5-.29-1.33-2.23-3.35-2.73-5-2.73-1.42 0-2.78.37-3.89.91-.17.08-.38.05-.5-.12-.12-.17-.09-.4.08-.52 1.27-.62 2.82-1.02 4.31-1.02 2.05 0 4.47.6 6.12 3.31.11.18.05.42-.13.53-.06.04-.12.06-.19.06zm.86-2.38c-.24 0-.46-.12-.59-.34-1.62-2.71-4.07-3.16-6.09-3.16-1.73 0-3.38.45-4.74 1.11-.2.1-.45.06-.6-.14-.15-.2-.11-.48.09-.63 1.55-.75 3.43-1.24 5.25-1.24 2.44 0 5.37.55 7.36 3.82.13.22.05.5-.17.63-.07.04-.15.06-.23.06z"/>
-                            </svg>
+                            <i class="fab fa-spotify"></i>
                         </div>
                         <span>Spotify</span>
                     </button>
 
                     <button class="music-option-button youtube-button" data-music="youtube">
                         <div class="music-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </svg>
+                            <i class="fab fa-youtube"></i>
                         </div>
                         <span>YouTube Music</span>
                     </button>
 
                     <button class="music-option-button bluetooth-button" data-music="bluetooth">
                         <div class="music-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
-                            </svg>
+                            <i class="fas fa-bluetooth"></i>
                         </div>
                         <span>Bluetooth</span>
                     </button>
@@ -119,9 +107,7 @@
                 </div>
                 <div class="app-placeholder">
                     <div class="placeholder-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                        </svg>
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <p>GPS - Fonctionnalité à venir</p>
                 </div>
@@ -181,16 +167,12 @@
 
                     <div class="settings-actions">
                         <button class="settings-button restart-interface" id="restartInterface">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                            </svg>
+                            <i class="fas fa-redo"></i>
                             <span>Relancer Interface</span>
                         </button>
 
                         <button class="settings-button restart-backend" id="restartBackend">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                            </svg>
+                            <i class="fas fa-server"></i>
                             <span>Redémarrer Backend Python</span>
                         </button>
                     </div>
@@ -209,10 +191,118 @@
     <div class="webview-container" id="webviewContainer" style="display: none;">
         <webview id="musicWebview" src="" style="width: 1024px; height: 450px;"></webview>
         <button class="close-webview" id="closeWebview">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-            </svg>
+            <i class="fas fa-times"></i>
         </button>
+    </div>
+
+    <!-- Barre de contrôle persistante -->
+    <div class="persistent-controls" id="persistentControls">
+        <!-- Contrôles audio -->
+        <div class="audio-controls">
+            <button class="control-btn" id="prevTrack">
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="control-btn play-pause" id="playPause">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="control-btn" id="nextTrack">
+                <i class="fas fa-step-forward"></i>
+            </button>
+        </div>
+
+        <!-- Volume -->
+        <div class="volume-control">
+            <i class="fas fa-volume-down"></i>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
+            <i class="fas fa-volume-up"></i>
+        </div>
+
+        <!-- Statuts de connexion -->
+        <div class="connection-statuses">
+            <div class="status-item wifi-status" id="wifiStatus">
+                <i class="fas fa-wifi"></i>
+                <span class="status-text">Wi-Fi</span>
+            </div>
+            <div class="status-item bluetooth-status" id="bluetoothStatus">
+                <i class="fas fa-bluetooth"></i>
+                <span class="status-text">BT</span>
+            </div>
+            <div class="status-item gps-status" id="gpsStatus">
+                <i class="fas fa-satellite-dish"></i>
+                <span class="status-text">GPS</span>
+            </div>
+        </div>
+
+        <!-- Informations système -->
+        <div class="system-info">
+            <div class="cpu-temp" id="cpuTemp">
+                <i class="fas fa-thermometer-half"></i>
+                <span id="tempValue">45°C</span>
+            </div>
+            <div class="current-app" id="currentApp">
+                <i class="fas fa-home"></i>
+                <span id="appName">Accueil</span>
+            </div>
+        </div>
+
+        <!-- Boutons utilitaires -->
+        <div class="utility-controls">
+            <button class="control-btn" id="homeButton" title="Retour à l'accueil">
+                <i class="fas fa-home"></i>
+            </button>
+            <button class="control-btn" id="keyboardButton" title="Clavier virtuel">
+                <i class="fas fa-keyboard"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Clavier virtuel -->
+    <div class="virtual-keyboard" id="virtualKeyboard" style="display: none;">
+        <div class="keyboard-header">
+            <span>Clavier virtuel</span>
+            <button class="close-keyboard" id="closeKeyboard">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="keyboard-body">
+            <div class="keyboard-row">
+                <button class="key">Q</button>
+                <button class="key">W</button>
+                <button class="key">E</button>
+                <button class="key">R</button>
+                <button class="key">T</button>
+                <button class="key">Y</button>
+                <button class="key">U</button>
+                <button class="key">I</button>
+                <button class="key">O</button>
+                <button class="key">P</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key">A</button>
+                <button class="key">S</button>
+                <button class="key">D</button>
+                <button class="key">F</button>
+                <button class="key">G</button>
+                <button class="key">H</button>
+                <button class="key">J</button>
+                <button class="key">K</button>
+                <button class="key">L</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key">Z</button>
+                <button class="key">X</button>
+                <button class="key">C</button>
+                <button class="key">V</button>
+                <button class="key">B</button>
+                <button class="key">N</button>
+                <button class="key">M</button>
+                <button class="key backspace"><i class="fas fa-backspace"></i></button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key space">Espace</button>
+                <button class="key enter">Entrée</button>
+            </div>
+        </div>
     </div>
 
     <script src="js/main.js"></script>
@@ -221,5 +311,6 @@
     <script src="js/music.js"></script>
     <script src="js/gps.js"></script>
     <script src="js/settings.js"></script>
+    <script src="js/controls.js"></script>
 </body>
 </html>
