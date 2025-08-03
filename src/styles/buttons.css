@@ -1,0 +1,114 @@
+.app-button {
+    width: 180px;
+    height: 180px;
+    background: rgba(28, 28, 30, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.app-button:hover::before,
+.app-button:active::before {
+    opacity: 1;
+}
+
+.app-button:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.app-button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+.app-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.app-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #FFFFFF;
+    text-align: center;
+    letter-spacing: 0.3px;
+}
+
+/* Couleurs spécifiques par bouton */
+.music-button:hover {
+    background: rgba(255, 45, 85, 0.1);
+    border-color: #FF2D55;
+}
+
+.music-button .app-icon {
+    color: #FF2D55;
+}
+
+.gps-button:hover {
+    background: rgba(48, 209, 88, 0.1);
+    border-color: #30D158;
+}
+
+.gps-button .app-icon {
+    color: #30D158;
+}
+
+.settings-button:hover {
+    background: rgba(142, 142, 147, 0.1);
+    border-color: #8E8E93;
+}
+
+.settings-button .app-icon {
+    color: #8E8E93;
+}
+
+/* Optimisations tactiles */
+.app-button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Feedback tactile amélioré */
+.app-button.pressed {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* États focus pour navigation clavier */
+.app-button:focus {
+    outline: 2px solid #007AFF;
+    outline-offset: 4px;
+}
