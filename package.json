@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron . --disable-gpu --ozone-platform=wayland"
   },
   "dependencies": {
     "dbus-next": "0.10.2"
