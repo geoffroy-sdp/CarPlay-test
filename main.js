@@ -58,40 +58,24 @@ async function setupBluetooth() {
     const objects = await manager.GetManagedObjects();
 
     for (const [path, interfaces] of Object.entries(objects)) {
-      if (interfaces['org.bluez.MediaPlayer1']) {
-        console.log('Player trouvé à', path);
-
-        // Crée un proxy pour le chemin du player
-        const playerObj = await systemBus.getProxyObject('org.bluez', path);
-        const props = playerObj.getInterface('org.freedesktop.DBus.Properties');
-
-        // Envoie les métadonnées actuelles
-        const metadata = interfaces['org.bluez.MediaPlayer1'].Metadata;
-        if(metadata) {
-          const title = metadata['xesam:title']?.value || 'Titre inconnu';
-          const artist = metadata['xesam:artist']?.value?.[0] || 'Artiste inconnu';
-          const album = metadata['xesam:album']?.value || '';
-          mainWindow.webContents.send('bt-meta', { title, artist, album });
-        }
-
-        // Écoute les changements
-        props.on('PropertiesChanged', (iface, changed) => {
-          if(iface !== 'org.bluez.MediaPlayer1') return;
-
-          if (changed.Metadata) {
-            const meta = changed.Metadata;
-            const title = meta['xesam:title']?.value || 'Titre inconnu';
-            const artist = meta['xesam:artist']?.value?.[0] || 'Artiste inconnu';
-            const album = meta['xesam:album']?.value || '';
-            mainWindow.webContents.send('bt-meta', { title, artist, album });
-          }
-
+      if (interfaces['org.bluez.Device1']) {
+        const deviceObj = await systemBus.getProxyObject('org.bluez', path);
+        const deviceProps = deviceObj.getInterface('org.freedesktop.DBus.Properties');
+      
+        // statut initial
+        const connected = interfaces['org.bluez.Device1'].Connected;
+        mainWindow.webContents.send('bt-status', connected ? 'connecté' : 'déconnecté');
+      
+        // écoute des changements
+        deviceProps.on('PropertiesChanged', (iface, changed) => {
+          if(iface !== 'org.bluez.Device1') return;
           if (changed.Connected !== undefined) {
             mainWindow.webContents.send('bt-status', changed.Connected ? 'connecté' : 'déconnecté');
-          }
-        });
-      }
-    }
+        }
+    });
+  }
+}
+
   } catch (err) {
     console.error('Erreur Bluetooth :', err);
   }
