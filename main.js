@@ -43,7 +43,11 @@ ipcMain.on('navigate', (event, page) => {
 // ----------------------
 async function setupBluetooth() {
   try {
-    const systemBus = dbus.systemBus();
+    const sessionBus = dbus.sessionBus();
+    if (!sessionBus) {
+      console.error('Impossible de se connecter au bus de session DBus');
+      return;
+    }
     const bluezObj = await systemBus.getProxyObject('org.bluez', '/');
     const manager = bluezObj.getInterface('org.freedesktop.DBus.ObjectManager');
 
