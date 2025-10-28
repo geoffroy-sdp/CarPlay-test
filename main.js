@@ -5,6 +5,9 @@ const dbus = require('dbus-next');
 let mainWindow;
 
 app.disableHardwareAcceleration();
+process.env.ELECTRON_DISABLE_GPU = '1';
+process.env.ELECTRON_ENABLE_LOGGING = '1';
+process.env.ELECTRON_ENABLE_STACK_DUMPING = '1';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -26,7 +29,7 @@ app.whenReady().then(createWindow);
 ipcMain.on('navigate', (event, page) => {
   if(page === 'bluetooth'){
     mainWindow.loadFile('bluetooth.html').then(() => {
-      setupBluetooth(); // initialise Bluetooth après ouverture
+      setImmediate(() => setupBluetooth());
     });
   } else if(page === 'musique'){
     mainWindow.loadFile('musique.html');
