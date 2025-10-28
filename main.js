@@ -62,7 +62,7 @@ async function setupBluetooth() {
         const playerObj = await systemBus.getProxyObject('org.bluez', objPath);
         const propertiesIface = playerObj.getInterface('org.freedesktop.DBus.Properties');
 
-        propertiesIface.on('PropertiesChanged', (iface, changed, invalidated) => {
+        propertiesIface.on('PropertiesChanged', (iface, changed) => {
           if (iface.includes('MediaPlayer1') && changed.Metadata) {
             const meta = changed.Metadata.value;
             const title = meta['xesam:title']?.value || 'Titre inconnu';
