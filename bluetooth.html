@@ -16,19 +16,15 @@
   <button id="homeBtn">Retour</button>
 
   <script>
-    const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
 
-    const status = document.getElementById('status');
-    const metaDiv = document.getElementById('meta');
+ipcRenderer.on('bt-meta', (event, data) => {
+    document.getElementById('meta').textContent = `Titre : ${data.title} | Artiste : ${data.artist} | Album : ${data.album}`;
+});
 
-    ipcRenderer.on('bt-meta', (event, data) => {
-      status.textContent = "Connecté à ton téléphone";
-      metaDiv.textContent = `Titre : ${data.title} | Artiste : ${data.artist} | Album : ${data.album}`;
-    });
-
-    document.getElementById('homeBtn').addEventListener('click', () => {
-      ipcRenderer.send('navigate', 'home');
-    });
+ipcRenderer.on('bt-status', (event, status) => {
+    document.getElementById('status').textContent = status;
+});
   </script>
 </body>
 </html>
