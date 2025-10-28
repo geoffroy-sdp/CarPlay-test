@@ -59,11 +59,14 @@ async function setupBluetooth() {
 
     for (const [path, interfaces] of Object.entries(objects)) {
       if (interfaces['org.bluez.MediaPlayer1']) {
-        const playerIface = interfaces['org.bluez.MediaPlayer1'];
-        const props = obj.getInterface('org.freedesktop.DBus.Properties', path);
+        console.log('Player trouvé à', path);
+
+        // Crée un proxy pour le chemin du player
+        const playerObj = await systemBus.getProxyObject('org.bluez', path);
+        const props = playerObj.getInterface('org.freedesktop.DBus.Properties');
 
         // Envoie les métadonnées actuelles
-        const metadata = playerIface.Metadata;
+        const metadata = interfaces['org.bluez.MediaPlayer1'].Metadata;
         if(metadata) {
           const title = metadata['xesam:title']?.value || 'Titre inconnu';
           const artist = metadata['xesam:artist']?.value?.[0] || 'Artiste inconnu';
