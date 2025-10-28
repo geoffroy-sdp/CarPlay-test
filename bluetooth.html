@@ -24,6 +24,7 @@
   <div id="status">Statut : Déconnecté</div>
   <div id="meta">Titre : - | Artiste : - | Album : -</div>
   <button id="homeBtn">Retour</button>
+  <button id="simulateBtn">Simuler (dev)</button>
 
   <script>
     const { ipcRenderer } = require('electron');
@@ -32,6 +33,14 @@
     document.getElementById('homeBtn').addEventListener('click', () => {
       ipcRenderer.send('navigate', 'home');
     });
+
+    // Bouton de simulation pour dev sans BlueZ (Windows)
+    const simBtn = document.getElementById('simulateBtn');
+    if (simBtn) {
+      simBtn.addEventListener('click', () => {
+        ipcRenderer.invoke('bt-simulate').then(res => console.log('simulation:', res));
+      });
+    }
 
     // Met à jour le statut
     ipcRenderer.on('bt-status', (event, status) => {
@@ -42,6 +51,23 @@
     ipcRenderer.on('bt-meta', (event, data) => {
       document.getElementById('meta').textContent =
         `Titre : ${data.title} | Artiste : ${data.artist} | Album : ${data.album}`;
+
+      // Mettre à jour la Media Session (affiche métadonnées dans l'OS / contrôleurs)
+      try {
+        if ('mediaSession' in navigator && typeof MediaMetadata !== 'undefined') {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: data.title || '',
+            artist: data.artist || '',
+            album: data.album || '',
+            artwork: data.artwork || []
+          });
+          // si l'émetteur fournit un état, on peut le passer
+          if (data.playbackState) navigator.mediaSession.playbackState = data.playbackState;
+        }
+      } catch (e) {
+        // shim: ignore si non supporté
+        console.warn('Media Session API non disponible :', e);
+      }
     });
 
     // Vérifie l'accès BlueZ au démarrage

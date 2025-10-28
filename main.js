@@ -48,6 +48,20 @@ ipcMain.handle('bluetooth-get-status', async () => {
     }
 });
 
+// Utilitaire de simulation (pratique pour dev sous Windows)
+ipcMain.handle('bt-simulate', async (event) => {
+  if (!mainWindow) return;
+  // envoie un statut connecté et des métadonnées factices
+  mainWindow.webContents.send('bt-status', 'connecté (simulation)');
+  mainWindow.webContents.send('bt-meta', {
+    title: 'Titre de test',
+    artist: 'Artiste de test',
+    album: 'Album test',
+    artwork: []
+  });
+  return 'simulé';
+});
+
 // ----------------------
 // Bluetooth via DBus
 // ----------------------
@@ -56,48 +70,72 @@ async function setupBluetooth() {
     const obj = await systemBus.getProxyObject('org.bluez', '/');
     const manager = obj.getInterface('org.freedesktop.DBus.ObjectManager');
     const objects = await manager.GetManagedObjects();
-
     let mediaPlayerPath = null;
 
+    // helper: unwrap dbus-next Variant objects recursively
+    const unwrap = (v) => {
+      if (v && typeof v === 'object' && 'value' in v) {
+        return unwrap(v.value);
+      }
+      if (Array.isArray(v)) return v.map(unwrap);
+      if (v && typeof v === 'object') {
+        const out = {};
+        for (const [k, val] of Object.entries(v)) out[k] = unwrap(val);
+        return out;
+      }
+      return v;
+    };
+
     for (const [path, interfaces] of Object.entries(objects)) {
-      // Statut réel de connexion
+      // Statut réel de connexion (Device1)
       if (interfaces['org.bluez.Device1']) {
-        const deviceIface = interfaces['org.bluez.Device1'];
+        const deviceProps = interfaces['org.bluez.Device1'];
         const deviceObj = await systemBus.getProxyObject('org.bluez', path);
         const props = deviceObj.getInterface('org.freedesktop.DBus.Properties');
 
+        const connected = unwrap(deviceProps.Connected);
+
         // Statut initial
-        mainWindow.webContents.send(
-          'bt-status',
-          deviceIface.Connected ? 'connecté' : 'déconnecté'
-        );
+        mainWindow.webContents.send('bt-status', connected ? 'connecté' : 'déconnecté');
 
         // Écoute des changements
         props.on('PropertiesChanged', (iface, changed) => {
           if (iface !== 'org.bluez.Device1') return;
           if (changed.Connected !== undefined) {
-            mainWindow.webContents.send(
-              'bt-status',
-              changed.Connected ? 'connecté' : 'déconnecté'
-            );
+            const val = unwrap(changed.Connected);
+            mainWindow.webContents.send('bt-status', val ? 'connecté' : 'déconnecté');
           }
         });
       }
 
-      // Pour les métadonnées audio
-      if (interfaces['org.bluez.MediaPlayer1'] && !mediaPlayerPath) {
+      // Pour les métadonnées audio (MediaPlayer1 ou MediaControl1)
+      if ((interfaces['org.bluez.MediaPlayer1'] || interfaces['org.bluez.MediaControl1']) && !mediaPlayerPath) {
         mediaPlayerPath = path;
         const playerObj = await systemBus.getProxyObject('org.bluez', path);
         const playerProps = playerObj.getInterface('org.freedesktop.DBus.Properties');
 
+        // Envoi des métadonnées initiales si présentes
+        try {
+          const metaRaw = await playerProps.Get('org.bluez.MediaPlayer1', 'Metadata').catch(() => undefined);
+          if (metaRaw !== undefined) {
+            const meta = unwrap(metaRaw);
+            const title = (meta['xesam:title'] && (Array.isArray(meta['xesam:title']) ? meta['xesam:title'][0] : meta['xesam:title'])) || 'Titre inconnu';
+            const artist = (meta['xesam:artist'] && meta['xesam:artist'][0]) || 'Artiste inconnu';
+            const album = meta['xesam:album'] || '';
+            mainWindow.webContents.send('bt-meta', { title, artist, album });
+          }
+        } catch (e) {
+          // ignore
+        }
+
         // Écoute des changements de métadonnées
         playerProps.on('PropertiesChanged', (iface, changed) => {
-          if (iface !== 'org.bluez.MediaPlayer1') return;
-          if (changed.Metadata) {
-            const meta = changed.Metadata;
-            const title = meta['xesam:title']?.value || 'Titre inconnu';
-            const artist = meta['xesam:artist']?.value?.[0] || 'Artiste inconnu';
-            const album = meta['xesam:album']?.value || '';
+          if (iface !== 'org.bluez.MediaPlayer1' && iface !== 'org.bluez.MediaControl1') return;
+          if (changed.Metadata !== undefined) {
+            const meta = unwrap(changed.Metadata);
+            const title = (meta['xesam:title'] && (Array.isArray(meta['xesam:title']) ? meta['xesam:title'][0] : meta['xesam:title'])) || 'Titre inconnu';
+            const artist = (meta['xesam:artist'] && meta['xesam:artist'][0]) || 'Artiste inconnu';
+            const album = meta['xesam:album'] || '';
             mainWindow.webContents.send('bt-meta', { title, artist, album });
           }
         });
