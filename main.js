@@ -116,16 +116,18 @@ async function setupBluetooth() {
 
         // Envoi des métadonnées initiales si présentes
         try {
-          const metaRaw = await playerProps.Get('org.bluez.MediaPlayer1', 'Metadata').catch(() => undefined);
-          if (metaRaw !== undefined) {
-            const meta = unwrap(metaRaw);
+          const allProps = await playerProps.GetAll('org.bluez.MediaPlayer1');
+          if ('Metadata' in allProps) {
+            const meta = unwrap(allProps.Metadata);
             const title = (meta['xesam:title'] && (Array.isArray(meta['xesam:title']) ? meta['xesam:title'][0] : meta['xesam:title'])) || 'Titre inconnu';
             const artist = (meta['xesam:artist'] && meta['xesam:artist'][0]) || 'Artiste inconnu';
             const album = meta['xesam:album'] || '';
             mainWindow.webContents.send('bt-meta', { title, artist, album });
+          } else {
+            console.warn('Metadata non disponible sur cet appareil');
           }
         } catch (e) {
-          // ignore
+          console.error('Erreur lors de la récupération des métadonnées :', e);
         }
 
         // Écoute des changements de métadonnées
@@ -137,6 +139,8 @@ async function setupBluetooth() {
             const artist = (meta['xesam:artist'] && meta['xesam:artist'][0]) || 'Artiste inconnu';
             const album = meta['xesam:album'] || '';
             mainWindow.webContents.send('bt-meta', { title, artist, album });
+          } else {
+            console.warn('Changement détecté mais pas de Metadata');
           }
         });
       }
