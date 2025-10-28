@@ -4,8 +4,18 @@
   <meta charset="UTF-8">
   <title>Bluetooth</title>
   <style>
-    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #111; color: white; font-family: sans-serif; flex-direction: column; }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      flex-direction: column;
+    }
     #status { margin: 20px; font-size: 20px; }
+    #meta { margin: 10px; font-size: 18px; }
     button { margin: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer; }
   </style>
 </head>
@@ -16,15 +26,28 @@
   <button id="homeBtn">Retour</button>
 
   <script>
-const { ipcRenderer } = require('electron');
+    const { ipcRenderer } = require('electron');
 
-ipcRenderer.on('bt-meta', (event, data) => {
-    document.getElementById('meta').textContent = `Titre : ${data.title} | Artiste : ${data.artist} | Album : ${data.album}`;
-});
+    // Bouton retour
+    document.getElementById('homeBtn').addEventListener('click', () => {
+      ipcRenderer.send('navigate', 'home');
+    });
 
-ipcRenderer.on('bt-status', (event, status) => {
-    document.getElementById('status').textContent = status;
-});
+    // Met à jour le statut
+    ipcRenderer.on('bt-status', (event, status) => {
+      document.getElementById('status').textContent = 'Statut : ' + status;
+    });
+
+    // Met à jour les métadonnées
+    ipcRenderer.on('bt-meta', (event, data) => {
+      document.getElementById('meta').textContent =
+        `Titre : ${data.title} | Artiste : ${data.artist} | Album : ${data.album}`;
+    });
+
+    // Vérifie l'accès BlueZ au démarrage
+    ipcRenderer.invoke('bluetooth-get-status').then(status => {
+      console.log(status);
+    });
   </script>
 </body>
 </html>
