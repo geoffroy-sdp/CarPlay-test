@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Musique</title>
+  <style>
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #111; color: white; font-family: sans-serif; flex-direction: column; }
+    button { margin: 15px; padding: 15px 30px; font-size: 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Musique</h1>
+  <button>Spotify</button>
+  <button>YT Music</button>
+  <button>SoundCloud</button>
+  <button id="homeBtn">Retour</button>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    document.getElementById('homeBtn').addEventListener('click', () => {
+      ipcRenderer.send('navigate', 'home');
+    });
+  </script>
+</body>
+</html>
