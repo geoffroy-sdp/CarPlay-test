@@ -1,7 +1,0 @@
-sudo apt remove nodejs -y
-sudo rm -rf /usr/local/bin/node /usr/local/bin/npm /usr/local/lib/node_modules
-
-cd ~
-wget https://nodejs.org/dist/v20.12.2/node-v20.12.2-linux-arm64.tar.xz
-tar -xf node-v20.12.2-linux-arm64.tar.xz
-sudo cp -R node-v20.12.2-linux-arm64/{bin,include,lib,share} /usr/local/

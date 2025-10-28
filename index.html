@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarPlay UI</title>
+<style>
+body {
+background-color: #111;
+color: white;
+font-family: sans-serif;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100vh;
+margin: 0;
+gap: 20px;
+}
+button {
+width: 200px;
+height: 60px;
+font-size: 20px;
+border: none;
+border-radius: 12px;
+background: #1e90ff;
+color: white;
+cursor: pointer;
+transition: 0.3s;
+}
+button:hover {
+background: #63b3ed;
+}
+#info {
+margin-top: 30px;
+text-align: center;
+}
+</style>
+</head>
+<body>
+<h1>Raspberry CarPlay</h1>
+<div>
+<button id="music">🎵 Musique</button>
+<button id="gps">🗺️ GPS</button>
+<button id="bluetooth">🔊 Bluetooth</button>
+</div>
+<div id="info">Aucune connexion Bluetooth.</div>
+
+
+<script>
+const { ipcRenderer } = require('electron');
+
+
+document.getElementById('bluetooth').addEventListener('click', () => {
+ipcRenderer.invoke('bluetooth-connect');
+});
+
+
+ipcRenderer.on('bt-status', (_, msg) => {
+document.getElementById('info').innerText = msg;
+});
+</script>
+</body>
+</html>

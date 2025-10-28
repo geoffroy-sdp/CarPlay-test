@@ -1,37 +1,14 @@
 {
-  "name": "carplay-interface",
-  "version": "1.0.0",
-  "description": "Interface CarPlay pour Raspberry Pi 4",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron .",
-    "dev": "electron . --dev",
-    "build": "electron-builder",
-    "dist": "electron-builder --publish=never"
-  },
-  "keywords": [
-    "carplay",
-    "raspberry-pi",
-    "electron"
-  ],
-  "author": "CarPlay Interface",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^37.2.5",
-    "electron-builder": "^26.0.12"
-  },
-  "build": {
-    "appId": "com.carplay.interface",
-    "productName": "CarPlay Interface",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "src/**/*",
-      "assets/**/*"
-    ],
-    "linux": {
-      "target": "AppImage"
-    }
-  }
+"name": "carplay-ui",
+"version": "1.0.0",
+"main": "main.js",
+"scripts": {
+"start": "electron ."
+},
+"dependencies": {
+"dbus-next": "^0.10.2"
+},
+"devDependencies": {
+"electron": "^33.0.0"
+}
 }
