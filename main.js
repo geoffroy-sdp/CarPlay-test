@@ -4,6 +4,8 @@ const dbus = require('dbus-next');
 
 let mainWindow;
 
+app.disableHardwareAcceleration();
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
