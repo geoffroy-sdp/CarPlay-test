@@ -57,25 +57,52 @@ async function setupBluetooth() {
     const manager = obj.getInterface('org.freedesktop.DBus.ObjectManager');
     const objects = await manager.GetManagedObjects();
 
-    for (const [path, interfaces] of Object.entries(objects)) {
-      if (interfaces['org.bluez.Device1']) {
-        const deviceObj = await systemBus.getProxyObject('org.bluez', path);
-        const deviceProps = deviceObj.getInterface('org.freedesktop.DBus.Properties');
-      
-        // statut initial
-        const connected = interfaces['org.bluez.Device1'].Connected;
-        mainWindow.webContents.send('bt-status', connected ? 'connecté' : 'déconnecté');
-      
-        // écoute des changements
-        deviceProps.on('PropertiesChanged', (iface, changed) => {
-          if(iface !== 'org.bluez.Device1') return;
-          if (changed.Connected !== undefined) {
-            mainWindow.webContents.send('bt-status', changed.Connected ? 'connecté' : 'déconnecté');
-        }
-    });
-  }
-}
+    let mediaPlayerPath = null;
 
+    for (const [path, interfaces] of Object.entries(objects)) {
+      // Statut réel de connexion
+      if (interfaces['org.bluez.Device1']) {
+        const deviceIface = interfaces['org.bluez.Device1'];
+        const deviceObj = await systemBus.getProxyObject('org.bluez', path);
+        const props = deviceObj.getInterface('org.freedesktop.DBus.Properties');
+
+        // Statut initial
+        mainWindow.webContents.send(
+          'bt-status',
+          deviceIface.Connected ? 'connecté' : 'déconnecté'
+        );
+
+        // Écoute des changements
+        props.on('PropertiesChanged', (iface, changed) => {
+          if (iface !== 'org.bluez.Device1') return;
+          if (changed.Connected !== undefined) {
+            mainWindow.webContents.send(
+              'bt-status',
+              changed.Connected ? 'connecté' : 'déconnecté'
+            );
+          }
+        });
+      }
+
+      // Pour les métadonnées audio
+      if (interfaces['org.bluez.MediaPlayer1'] && !mediaPlayerPath) {
+        mediaPlayerPath = path;
+        const playerObj = await systemBus.getProxyObject('org.bluez', path);
+        const playerProps = playerObj.getInterface('org.freedesktop.DBus.Properties');
+
+        // Écoute des changements de métadonnées
+        playerProps.on('PropertiesChanged', (iface, changed) => {
+          if (iface !== 'org.bluez.MediaPlayer1') return;
+          if (changed.Metadata) {
+            const meta = changed.Metadata;
+            const title = meta['xesam:title']?.value || 'Titre inconnu';
+            const artist = meta['xesam:artist']?.value?.[0] || 'Artiste inconnu';
+            const album = meta['xesam:album']?.value || '';
+            mainWindow.webContents.send('bt-meta', { title, artist, album });
+          }
+        });
+      }
+    }
   } catch (err) {
     console.error('Erreur Bluetooth :', err);
   }
