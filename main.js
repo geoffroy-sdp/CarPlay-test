@@ -113,10 +113,22 @@ async function setupBluetooth() {
         mediaPlayerPath = path;
         const playerObj = await systemBus.getProxyObject('org.bluez', path);
         const playerProps = playerObj.getInterface('org.freedesktop.DBus.Properties');
-
-        // Envoi des métadonnées initiales si présentes
+      
+        // Détermine dynamiquement l'interface à utiliser
+        const mediaInterface = interfaces['org.bluez.MediaPlayer1']
+          ? 'org.bluez.MediaPlayer1'
+          : interfaces['org.bluez.MediaControl1']
+          ? 'org.bluez.MediaControl1'
+          : null;
+      
+        if (!mediaInterface) {
+          console.warn('Aucune interface multimédia disponible');
+          return;
+        }
+      
+        // Envoi des métadonnées initiales si disponibles
         try {
-          const allProps = await playerProps.GetAll('org.bluez.MediaPlayer1');
+          const allProps = await playerProps.GetAll(mediaInterface);
           if ('Metadata' in allProps) {
             const meta = unwrap(allProps.Metadata);
             const title = (meta['xesam:title'] && (Array.isArray(meta['xesam:title']) ? meta['xesam:title'][0] : meta['xesam:title'])) || 'Titre inconnu';
@@ -124,26 +136,25 @@ async function setupBluetooth() {
             const album = meta['xesam:album'] || '';
             mainWindow.webContents.send('bt-meta', { title, artist, album });
           } else {
-            console.warn('Metadata non disponible sur cet appareil');
+            console.warn('Metadata non disponible sur cette interface');
           }
         } catch (e) {
           console.error('Erreur lors de la récupération des métadonnées :', e);
         }
-
+      
         // Écoute des changements de métadonnées
         playerProps.on('PropertiesChanged', (iface, changed) => {
-          if (iface !== 'org.bluez.MediaPlayer1' && iface !== 'org.bluez.MediaControl1') return;
+          if (iface !== mediaInterface) return;
           if (changed.Metadata !== undefined) {
             const meta = unwrap(changed.Metadata);
             const title = (meta['xesam:title'] && (Array.isArray(meta['xesam:title']) ? meta['xesam:title'][0] : meta['xesam:title'])) || 'Titre inconnu';
             const artist = (meta['xesam:artist'] && meta['xesam:artist'][0]) || 'Artiste inconnu';
             const album = meta['xesam:album'] || '';
             mainWindow.webContents.send('bt-meta', { title, artist, album });
-          } else {
-            console.warn('Changement détecté mais pas de Metadata');
           }
         });
       }
+
     }
   } catch (err) {
     console.error('Erreur Bluetooth :', err);
