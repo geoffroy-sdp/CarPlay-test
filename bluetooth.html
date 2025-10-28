@@ -12,14 +12,20 @@
 <body>
   <h1>Bluetooth</h1>
   <div id="status">Statut : Déconnecté</div>
+  <div id="meta">Titre : - | Artiste : - | Album : -</div>
   <button id="homeBtn">Retour</button>
 
   <script>
     const { ipcRenderer } = require('electron');
     const status = document.getElementById('status');
 
-    // Ici tu pourras afficher le statut Bluetooth via ton main.js
-    // Ex : status.textContent = "Connecté avec Z Flip5";
+    const { ipcRenderer } = require('electron');
+    const metaDiv = document.getElementById('meta');
+
+    ipcRenderer.on('bt-meta', (event, data) => {
+      status.textContent = "Connecté à ton téléphone";
+      metaDiv.textContent = `Titre : ${data.title} | Artiste : ${data.artist} | Album : ${data.album}`;
+    });
 
     document.getElementById('homeBtn').addEventListener('click', () => {
       ipcRenderer.send('navigate', 'home');
